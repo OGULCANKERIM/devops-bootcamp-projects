@@ -1,0 +1,20 @@
+name: Otomatik Docker Testi
+
+# Bu robot ne zaman uyanacak?
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-et:
+    # Robotun çalışacağı ücretsiz bulut işletim sistemi
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Adım: GitHub'daki projemizin kodlarını robotun içine indir
+      - name: Kodları Çek (Checkout)
+        uses: actions/checkout@v3
+
+      # 2. Adım: Dockerfile'ı kullanarak imajı inşa etmeyi (Build) dene
+      - name: Docker İmajını İnşa Etmeyi Dene
+        run: docker build -t test-sunucusu .
