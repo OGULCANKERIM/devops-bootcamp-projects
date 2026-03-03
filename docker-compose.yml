@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  # 1. Servisimiz: Kendi ürettiğimiz Web Sunucumuz
+  on_yuz_sunucusu:
+    image: english-master-web
+    ports:
+      - "8080:80"
+
+  # 2. Servisimiz: Kelimeleri ve sınav sonuçlarını tutacak Veritabanı
+  veritabani_sunucusu:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: gizlisifre123
+      POSTGRES_DB: english_db
+    ports:
+      - "5432:5432"
