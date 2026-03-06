@@ -1,20 +1,27 @@
-name: Otomatik Docker Testi
+name: Otomatik Test ve Dagitim (CI/CD)
 
-# Bu robot ne zaman uyanacak?
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  test-et:
-    # Robotun çalışacağı ücretsiz bulut işletim sistemi
+  test-ve-dagit:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Adım: GitHub'daki projemizin kodlarını robotun içine indir
-      - name: Kodları Çek (Checkout)
+      # 1. Adım: Kodları Çek
+      - name: Kodlari Cek (Checkout)
         uses: actions/checkout@v3
 
-      # 2. Adım: Dockerfile'ı kullanarak imajı inşa etmeyi (Build) dene
-      - name: Docker İmajını İnşa Etmeyi Dene
-        run: docker build -t test-sunucusu .
+      # 2. Adım: Çelik Kasadaki Şifrelerle Docker Hub'a Giriş Yap
+      - name: Docker Hub'a Giris Yap
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      # 3. Adım: İmajı İnşa Et ve Docker Hub'a Fırlat!
+      - name: Docker Imajini Insa Et ve Firlat (Build & Push)
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-bootcamp:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/devops-bootcamp:latest
